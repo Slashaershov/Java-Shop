@@ -1,18 +1,12 @@
 package org.skypro.skyshop.product;
 
-public class Product
+public abstract class Product
 {
     private String name;
-    private int cost;
 
-    public Product(String name, int cost)
+    public Product(String name)
     {
         this.name = name;
-        if (cost <= 0)
-        {
-            throw new IllegalArgumentException("cost <= 0");
-        }
-        this.cost = cost;
     }
 
     public String getName()
@@ -20,8 +14,13 @@ public class Product
         return name;
     }
 
-    public int getCost()
+    abstract public int getPrice();
+
+    public abstract boolean isSpecial();
+
+    @Override
+    public String toString()
     {
-        return cost;
+        return name;
     }
 }
