@@ -1,45 +1,35 @@
 package org.skypro.skyshop;
 
-import org.skypro.skyshop.product.DiscontedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
-import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.services.SearchEngine;
 
 public class App
 {
     public static void main(String[] args)
     {
-        Product p1 = new SimpleProduct("door1", 100);
-        Product p2 = new DiscontedProduct("door2", 200, 10);
-        Product p3 = new DiscontedProduct("door3", 300, 10);
-        Product p4 = new FixPriceProduct("door4");
-        Product p5 = new FixPriceProduct("door5");
-        Product p6 = new SimpleProduct("door6", 600);
+        SearchEngine searchSevice = new SearchEngine(10);
+        searchSevice.add(new SimpleProduct("door1", 100));
+        searchSevice.add(new DiscontedProduct("door2", 200, 10));
+        searchSevice.add(new DiscontedProduct("door3", 300, 10));
+        searchSevice.add(new FixPriceProduct("door4"));
+        searchSevice.add(new FixPriceProduct("door5"));
+        searchSevice.add(new FixPriceProduct("door21"));
+        searchSevice.add(new FixPriceProduct("door7"));
+        searchSevice.add(new Article("doorArticle", "door21 description"));
 
-        ProductBasket basket = new ProductBasket();
+        printSearch("door", searchSevice);
+        printSearch("oor2", searchSevice);
+    }
 
-        basket.add(p1);
-        basket.add(p2);
-        basket.add(p3);
-        basket.add(p4);
-        System.out.println("basker 4 item check");
-        basket.print();
-        System.out.println("cost with 4 items: " + basket.getPrice());
+    private static  void printSearch (String str, SearchEngine searchSevice){
+        var searches = searchSevice.search(str);
+        for (var x : searches){
+            if (x!=null){
+                System.out.println(x.searchTerm());
+            }
 
-        basket.add(p5);
-        System.out.println("try add in full basket: ");
-        basket.add(p6);
-
-        System.out.println("find p3: " + basket.checkProduct(p3.getName()));
-        System.out.println("find p6: " + basket.checkProduct(p6.getName()));
-
-        basket.clear();
-
-        System.out.println("basker empty check");
-        basket.print();
-        System.out.println("cost clean : " + basket.getPrice());
-
-        basket.checkProduct(p3.getName());
+        }
+        System.out.println();
     }
 }
