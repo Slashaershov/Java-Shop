@@ -21,14 +21,14 @@ public class ProductBasket
         System.out.println("Невозможно добавить продукт");
     }
 
-    public int getCost()
+    public int getPrice()
     {
         int res = 0;
         for (Product x : products)
         {
             if (x != null)
             {
-                res += x.getCost();
+                res += x.getPrice();
             }
         }
         return res;
@@ -37,12 +37,16 @@ public class ProductBasket
     public void print()
     {
         int sum = 0;
+        int specialProductCount= 0;
         for (Product x : products)
         {
             if (x != null)
             {
-                System.out.println(x.getName() + ": " + x.getCost());
-                sum += x.getCost();
+                System.out.println(x);
+                sum += x.getPrice();
+                if (x.isSpecial()){
+                    specialProductCount++;
+                }
             }
         }
         if (sum == 0)
@@ -52,6 +56,7 @@ public class ProductBasket
         else
         {
             System.out.println("Итого: " + sum);
+            System.out.println("Специальных товаров: " + specialProductCount);
         }
     }
 
