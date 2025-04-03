@@ -2,21 +2,25 @@ package org.skypro.skyshop.services;
 
 public class SearchEngine
 {
-    private Searchable[] allObjects;
+    private Searchable[] allSearchableObjects;
 
-    public SearchEngine (int lenght){
-        allObjects = new Searchable[lenght];
-
+    public SearchEngine(int lenght)
+    {
+        allSearchableObjects = new Searchable[lenght];
     }
 
-    public Searchable[] search(String str){
+    public Searchable[] search(String str)
+    {
         int mathces = 0;
         Searchable[] res = new Searchable[5];
-        for (Searchable x : allObjects){
-            if (x!=null && x.searchTerm().contains(str)){
-                res[mathces] = x;
+        for (Searchable searchableObject : allSearchableObjects)
+        {
+            if (searchableObject != null && searchableObject.searchTerm().contains(str))
+            {
+                res[mathces] = searchableObject;
                 mathces++;
-                if (mathces ==5){
+                if (mathces == 5)
+                {
                     break;
                 }
             }
@@ -24,11 +28,13 @@ public class SearchEngine
         return res;
     }
 
-    public void add (Searchable itm){
-        for (int i= 0; i< allObjects.length; i++)
+    public void add(Searchable searchableObject)
+    {
+        for (int i = 0; i < allSearchableObjects.length; i++)
         {
-            if (allObjects[i] == null){
-                allObjects[i] = itm;
+            if (allSearchableObjects[i] == null)
+            {
+                allSearchableObjects[i] = searchableObject;
                 break;
             }
         }

@@ -3,6 +3,7 @@ package org.skypro.skyshop;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.services.SearchEngine;
+import org.skypro.skyshop.services.Searchable;
 
 public class App
 {
@@ -22,13 +23,15 @@ public class App
         printSearch("oor2", searchSevice);
     }
 
-    private static  void printSearch (String str, SearchEngine searchSevice){
-        var searches = searchSevice.search(str);
-        for (var x : searches){
-            if (x!=null){
+    private static void printSearch(String str, SearchEngine searchSevice)
+    {
+        Searchable[] searches = searchSevice.search(str);
+        for (Searchable x : searches)
+        {
+            if (x != null)
+            {
                 System.out.println(x.searchTerm());
             }
-
         }
         System.out.println();
     }
