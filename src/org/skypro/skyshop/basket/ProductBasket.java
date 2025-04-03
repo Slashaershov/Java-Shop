@@ -37,14 +37,15 @@ public class ProductBasket
     public void print()
     {
         int sum = 0;
-        int specialProductCount= 0;
+        int specialProductCount = 0;
         for (Product x : products)
         {
             if (x != null)
             {
                 System.out.println(x);
                 sum += x.getPrice();
-                if (x.isSpecial()){
+                if (x.isSpecial())
+                {
                     specialProductCount++;
                 }
             }
