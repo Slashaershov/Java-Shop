@@ -12,6 +12,10 @@ public class DiscontedProduct extends Product
         {
             throw new IllegalArgumentException("cost <= 0");
         }
+        if (discount < 0 || discount > 100)
+        {
+            throw new IllegalArgumentException("discount not included in the interval [0;100]");
+        }
         this.basePrice = price;
         this.discount = discount;
     }

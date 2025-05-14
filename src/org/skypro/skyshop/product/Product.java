@@ -2,12 +2,18 @@ package org.skypro.skyshop.product;
 
 import org.skypro.skyshop.services.Searchable;
 
+import java.lang.String;
+
 public abstract class Product implements Searchable
 {
     private String name;
 
     public Product(String name)
     {
+        if (name == null || name.isBlank())
+        {
+            throw new IllegalArgumentException("name is null or empty");
+        }
         this.name = name;
     }
 
