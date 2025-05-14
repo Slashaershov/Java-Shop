@@ -1,5 +1,6 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.customExceptions.BestResultNotFound;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.services.SearchEngine;
@@ -10,29 +11,70 @@ public class App
     public static void main(String[] args)
     {
         SearchEngine searchSevice = new SearchEngine(10);
-        searchSevice.add(new SimpleProduct("door1", 100));
-        searchSevice.add(new DiscontedProduct("door2", 200, 10));
-        searchSevice.add(new DiscontedProduct("door3", 300, 10));
-        searchSevice.add(new FixPriceProduct("door4"));
-        searchSevice.add(new FixPriceProduct("door5"));
-        searchSevice.add(new FixPriceProduct("door21"));
-        searchSevice.add(new FixPriceProduct("door7"));
-        searchSevice.add(new Article("doorArticle", "door21 description"));
+        tryInitiateOptionsWithError();
+        demonstrateSearchPower(searchSevice);
+    }
 
+    private static void demonstrateSearchPower(SearchEngine searchSevice)
+    {
+        searchSevice.add(new DiscontedProduct("doordoordoordoor4", 100, 5));
+        searchSevice.add(new SimpleProduct("doordoordoor3", 100));
+        searchSevice.add(new SimpleProduct("2doordoor2", 100));
         printSearch("door", searchSevice);
-        printSearch("oor2", searchSevice);
+        printSearch("clar", searchSevice);
+    }
+
+    private static void tryInitiateOptionsWithError()
+    {
+        try
+        {
+            SimpleProduct p1 = new SimpleProduct("door1", -100);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.toString());
+        }
+
+        try
+        {
+            DiscontedProduct p2 = new DiscontedProduct(null, 100, 5);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.toString());
+        }
+
+        try
+        {
+            SimpleProduct sp2 = new SimpleProduct("", 100);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.toString());
+        }
+
+        try
+        {
+            DiscontedProduct p2 = new DiscontedProduct("6", 1, -4);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e.toString());
+        }
     }
 
     private static void printSearch(String str, SearchEngine searchSevice)
     {
-        Searchable[] searches = searchSevice.search(str);
-        for (Searchable x : searches)
+        try
         {
-            if (x != null)
-            {
-                System.out.println(x.searchTerm());
-            }
+            Searchable search = searchSevice.search(str);
+            System.out.println(search.searchTerm());
+            System.out.println();
         }
-        System.out.println();
+        catch (BestResultNotFound e)
+        {
+            System.out.println("matches not founded");
+        }
     }
 }
+

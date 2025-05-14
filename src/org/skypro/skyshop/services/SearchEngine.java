@@ -1,5 +1,7 @@
 package org.skypro.skyshop.services;
 
+import org.skypro.skyshop.customExceptions.BestResultNotFound;
+
 public class SearchEngine
 {
     private Searchable[] allSearchableObjects;
@@ -7,25 +9,6 @@ public class SearchEngine
     public SearchEngine(int lenght)
     {
         allSearchableObjects = new Searchable[lenght];
-    }
-
-    public Searchable[] search(String str)
-    {
-        int mathces = 0;
-        Searchable[] res = new Searchable[5];
-        for (Searchable searchableObject : allSearchableObjects)
-        {
-            if (searchableObject != null && searchableObject.searchTerm().contains(str))
-            {
-                res[mathces] = searchableObject;
-                mathces++;
-                if (mathces == 5)
-                {
-                    break;
-                }
-            }
-        }
-        return res;
     }
 
     public void add(Searchable searchableObject)
@@ -38,5 +21,33 @@ public class SearchEngine
                 break;
             }
         }
+    }
+
+    public Searchable search(String substr) throws BestResultNotFound
+    {
+        if (substr == null || substr.isBlank()){
+            throw new IllegalArgumentException("substr is empty");
+        }
+        Searchable result = null;
+        int maxRepeatCount = 0;
+        int currentRepeatCount = 0;
+        for (Searchable searchable : allSearchableObjects)
+        {
+            if (searchable == null)
+            {
+                continue;
+            }
+            currentRepeatCount = searchable.getSearchTerm(substr);
+            if (currentRepeatCount > maxRepeatCount)
+            {
+                maxRepeatCount = currentRepeatCount;
+                result = searchable;
+            }
+        }
+        if (result == null)
+        {
+            throw new BestResultNotFound(substr);
+        }
+        return result;
     }
 }
