@@ -1,53 +1,41 @@
 package org.skypro.skyshop.services;
 
+import java.util.LinkedList;
+import java.util.List;
 import org.skypro.skyshop.customExceptions.BestResultNotFound;
 
-public class SearchEngine
-{
-    private Searchable[] allSearchableObjects;
+public class SearchEngine {
 
-    public SearchEngine(int lenght)
-    {
-        allSearchableObjects = new Searchable[lenght];
-    }
+  private LinkedList<Searchable> allSearchableObjects;
 
-    public void add(Searchable searchableObject)
-    {
-        for (int i = 0; i < allSearchableObjects.length; i++)
-        {
-            if (allSearchableObjects[i] == null)
-            {
-                allSearchableObjects[i] = searchableObject;
-                break;
-            }
-        }
-    }
+  public SearchEngine() {
+    allSearchableObjects = new LinkedList<>();
+  }
 
-    public Searchable search(String substr) throws BestResultNotFound
-    {
-        if (substr == null || substr.isBlank()){
-            throw new IllegalArgumentException("substr is empty");
-        }
-        Searchable result = null;
-        int maxRepeatCount = 0;
-        int currentRepeatCount = 0;
-        for (Searchable searchable : allSearchableObjects)
-        {
-            if (searchable == null)
-            {
-                continue;
-            }
-            currentRepeatCount = searchable.getSearchTerm(substr);
-            if (currentRepeatCount > maxRepeatCount)
-            {
-                maxRepeatCount = currentRepeatCount;
-                result = searchable;
-            }
-        }
-        if (result == null)
-        {
-            throw new BestResultNotFound(substr);
-        }
-        return result;
+  public void add(Searchable newItem) {
+    allSearchableObjects.add(newItem);
+  }
+
+  public List<Searchable> search(String substr) throws BestResultNotFound {
+    if (substr == null || substr.isBlank()) {
+      throw new IllegalArgumentException("substr is empty");
     }
+    int maxRepeatCount = 0;
+    int currentRepeatCount = 0;
+    LinkedList<Searchable> result = new LinkedList<>();
+    for (Searchable searchable : allSearchableObjects) {
+      currentRepeatCount = searchable.getSearchTerm(substr);
+      if (currentRepeatCount > maxRepeatCount) {
+        maxRepeatCount = currentRepeatCount;
+        result.clear();
+        result.add(searchable);
+      } else if (currentRepeatCount == maxRepeatCount && currentRepeatCount != 0) {
+        result.add(searchable);
+      }
+    }
+    if (result.isEmpty()) {
+      throw new BestResultNotFound(substr);
+    }
+    return result;
+  }
 }
