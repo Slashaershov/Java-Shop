@@ -14,7 +14,7 @@ public class App {
     demonstrateEx3();
   }
 
-  public  static void demonstrateEx3(){
+  public static void demonstrateEx3() {
     SearchEngine searchService = new SearchEngine();
     searchService.add(new DiscontedProduct("doordoordoordoor4", 100, 5));
     searchService.add(new DiscontedProduct("doordoordoordoor3", 12, 5));
@@ -48,7 +48,6 @@ public class App {
     }
     basket.print();
     System.out.println("------------------------");
-
   }
 
   private static void tryInitiateOptionsWithError() {
@@ -80,7 +79,7 @@ public class App {
   private static void printSearch(String str, SearchEngine searchSevice) {
     try {
       List<Searchable> searches = searchSevice.search(str);
-      for(Searchable searchable :searches){
+      for (Searchable searchable : searches) {
         System.out.println(searchable.searchTerm());
       }
       System.out.println();
