@@ -2,23 +2,21 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 public class ProductBasket
 {
-    private Product[] products = new Product[5];
+    private LinkedList<Product> products = new LinkedList<>();
 
     public void add(Product newProduct)
     {
-        for (int i = 0; i < products.length; i++)
+        if (newProduct == null)
         {
-            if (products[i] == null)
-            {
-                products[i] = newProduct;
-                return;
-            }
+            throw new IllegalArgumentException("new product is null");
         }
-        System.out.println("Невозможно добавить продукт");
+        products.add(newProduct);
     }
 
     public int getPrice()
@@ -26,13 +24,27 @@ public class ProductBasket
         int res = 0;
         for (Product x : products)
         {
-            if (x != null)
+            res += x.getPrice();
+        }
+        return res;
+    }
+
+    public List<Product> remove(String name)
+    {
+        Iterator<Product> iterator = products.iterator();
+        List<Product> res = new LinkedList<>();
+        while (iterator.hasNext())
+        {
+            Product product = iterator.next();
+            if (product.getName().equals(name))
             {
-                res += x.getPrice();
+                iterator.remove();
+                res.add(product);
             }
         }
         return res;
     }
+
 
     public void print()
     {
@@ -40,14 +52,11 @@ public class ProductBasket
         int specialProductCount = 0;
         for (Product x : products)
         {
-            if (x != null)
+            System.out.println(x);
+            sum += x.getPrice();
+            if (x.isSpecial())
             {
-                System.out.println(x);
-                sum += x.getPrice();
-                if (x.isSpecial())
-                {
-                    specialProductCount++;
-                }
+                specialProductCount++;
             }
         }
         if (sum == 0)
@@ -65,7 +74,7 @@ public class ProductBasket
     {
         for (Product x : products)
         {
-            if (x != null && x.getName().equals(name))
+            if (x.getName().equals(name))
             {
                 return true;
             }
@@ -75,6 +84,6 @@ public class ProductBasket
 
     public void clear()
     {
-        Arrays.fill(products, null);
+        products.clear();
     }
 }
