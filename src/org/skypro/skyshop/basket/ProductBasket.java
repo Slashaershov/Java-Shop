@@ -1,18 +1,15 @@
 package org.skypro.skyshop.basket;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Set;
 import org.skypro.skyshop.product.Product;
 
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 public class ProductBasket {
 
-  private LinkedHashMap<String, ArrayList<Product>> products = new LinkedHashMap<>();
+  private HashMap<String, ArrayList<Product>> products = new LinkedHashMap<>();
 
   public void add(Product newProduct) {
     if (newProduct == null) {

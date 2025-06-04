@@ -1,6 +1,8 @@
 package org.skypro.skyshop;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.skypro.skyshop.customExceptions.BestResultNotFound;
 import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.basket.ProductBasket;
@@ -78,9 +80,9 @@ public class App {
 
   private static void printSearch(String str, SearchEngine searchSevice) {
     try {
-      List<Searchable> searches = searchSevice.search(str);
-      for (Searchable searchable : searches) {
-        System.out.println(searchable.searchTerm());
+      Map<String,Searchable> searches = searchSevice.search(str);
+      for (String searchableName : searches.keySet()) {
+        System.out.println(searches.get(searchableName).searchTerm());
       }
       System.out.println();
     } catch (BestResultNotFound e) {
