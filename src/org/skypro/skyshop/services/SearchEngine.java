@@ -1,7 +1,9 @@
 package org.skypro.skyshop.services;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.skypro.skyshop.customExceptions.BestResultNotFound;
 
 public class SearchEngine {
@@ -16,21 +18,21 @@ public class SearchEngine {
     allSearchableObjects.add(newItem);
   }
 
-  public List<Searchable> search(String substr) throws BestResultNotFound {
+  public Map<String,Searchable> search(String substr) throws BestResultNotFound {
     if (substr == null || substr.isBlank()) {
       throw new IllegalArgumentException("substr is empty");
     }
     int maxRepeatCount = 0;
     int currentRepeatCount = 0;
-    LinkedList<Searchable> result = new LinkedList<>();
+    Map<String,Searchable> result = new HashMap<>();
     for (Searchable searchable : allSearchableObjects) {
       currentRepeatCount = searchable.getSearchTerm(substr);
       if (currentRepeatCount > maxRepeatCount) {
         maxRepeatCount = currentRepeatCount;
         result.clear();
-        result.add(searchable);
+        result.put(searchable.toString(), searchable);
       } else if (currentRepeatCount == maxRepeatCount && currentRepeatCount != 0) {
-        result.add(searchable);
+        result.put(searchable.toString(), searchable);
       }
     }
     if (result.isEmpty()) {
