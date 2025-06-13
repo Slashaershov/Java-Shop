@@ -2,6 +2,7 @@ package org.skypro.skyshop.basket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.LinkedHashMap;
 import org.skypro.skyshop.product.Product;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class ProductBasket {
 
-  private HashMap<String, ArrayList<Product>> products = new LinkedHashMap<>();
+  private Map<String, ArrayList<Product>> products = new LinkedHashMap<>();
 
   public void add(Product newProduct) {
     if (newProduct == null) {
