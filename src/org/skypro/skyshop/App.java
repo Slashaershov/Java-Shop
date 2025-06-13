@@ -12,8 +12,23 @@ import org.skypro.skyshop.services.Searchable;
 public class App {
 
   public static void main(String[] args) {
-    demonstrateEx2();
-    demonstrateEx3();
+    //demonstrateEx2();
+    //demonstrateEx3();
+    demonstrateSearchService();
+  }
+
+  private static void demonstrateSearchService() {
+    SearchEngine searchService = new SearchEngine();
+    searchService.add(new DiscontedProduct("doordoordoordoor4", 100, 5));
+    searchService.add(new DiscontedProduct("doordoordoordoordoor3", 12, 5));
+    searchService.add(new DiscontedProduct("doordoordoordoordoor1", 12, 5));
+    searchService.add(new DiscontedProduct("doordoordoordoordoor9", 12, 5));
+    searchService.add(new SimpleProduct("doordoordoor3", 100));
+    searchService.add(new SimpleProduct("2doordoor2", 100));
+    System.out.println("SearchService demonstrate for 'door'");
+    printSearch("door", searchService);
+    System.out.println("SearchService demonstrate for 'clar'");
+    printSearch("clar", searchService);
   }
 
   public static void demonstrateEx3() {
@@ -80,9 +95,9 @@ public class App {
 
   private static void printSearch(String str, SearchEngine searchSevice) {
     try {
-      Map<String,Searchable> searches = searchSevice.search(str);
-      for (String searchableName : searches.keySet()) {
-        System.out.println(searches.get(searchableName).searchTerm());
+      Set<Searchable> searches = searchSevice.search(str);
+      for (Searchable search : searches) {
+        System.out.println(search.searchTerm());
       }
       System.out.println();
     } catch (BestResultNotFound e) {
