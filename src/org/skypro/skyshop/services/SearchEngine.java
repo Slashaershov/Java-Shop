@@ -27,17 +27,7 @@ public class SearchEngine {
     }
     int maxRepeatCount = 0;
     int currentRepeatCount = 0;
-    Set<Searchable> result = new TreeSet<>(new Comparator<Searchable>() {
-      @Override
-      public int compare(Searchable o1, Searchable o2) {
-        String name1= o1.searchTerm();
-        String name2= o2.searchTerm();
-        if(name1.length()!=name2.length()){
-          return Integer.compare(name1.length(),name2.length());
-        }
-        return name1.compareToIgnoreCase(name2);
-      }
-    });
+    Set<Searchable> result = new TreeSet<>(new FindComporator());
     for (Searchable searchable : allSearchableObjects) {
       currentRepeatCount = searchable.getSearchTerm(substr);
       if (currentRepeatCount > maxRepeatCount) {
@@ -52,5 +42,18 @@ public class SearchEngine {
       throw new BestResultNotFound(substr);
     }
     return result;
+  }
+
+  private class FindComporator implements Comparator<Searchable> {
+
+    @Override
+    public int compare(Searchable o1, Searchable o2) {
+      String name1 = o1.searchTerm();
+      String name2 = o2.searchTerm();
+      if (name1.length() != name2.length()) {
+        return Integer.compare(name1.length(), name2.length());
+      }
+      return name1.compareToIgnoreCase(name2);
+    }
   }
 }
