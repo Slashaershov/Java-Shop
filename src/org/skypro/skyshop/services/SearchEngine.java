@@ -4,9 +4,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.OptionalInt;
 import java.util.Set;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.skypro.skyshop.customExceptions.BestResultNotFound;
 
 public class SearchEngine {
@@ -27,21 +29,18 @@ public class SearchEngine {
     }
     int maxRepeatCount = 0;
     int currentRepeatCount = 0;
-    Set<Searchable> result = new TreeSet<>(new FindComporator());
-    for (Searchable searchable : allSearchableObjects) {
-      currentRepeatCount = searchable.getSearchTerm(substr);
-      if (currentRepeatCount > maxRepeatCount) {
-        maxRepeatCount = currentRepeatCount;
-        result.clear();
-        result.add(searchable);
-      } else if (currentRepeatCount == maxRepeatCount && currentRepeatCount != 0) {
-        result.add(searchable);
-      }
-    }
-    if (result.isEmpty()) {
+    OptionalInt maxRepeatCountOptional = allSearchableObjects.stream()
+        .mapToInt(x -> x.getSearchTerm(substr))
+        .max();
+    if (maxRepeatCountOptional.isEmpty()) {
       throw new BestResultNotFound(substr);
     }
-    return result;
+    else {
+      maxRepeatCount = maxRepeatCountOptional.getAsInt();
+      return allSearchableObjects.stream()
+          .filter(x -> x.getSearchTerm(substr) == maxRepeatCount)
+          .collect(Collectors.toCollection(() -> new TreeSet<>(new FindComporator())));
+    }
   }
 
   private class FindComporator implements Comparator<Searchable> {
