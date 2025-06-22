@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
 import org.skypro.skyshop.product.Product;
 
 import java.util.List;
@@ -22,13 +23,10 @@ public class ProductBasket {
   }
 
   public int getPrice() {
-    int res = 0;
-    for (String key : products.keySet()) {
-      for (Product x : products.get(key)) {
-        res += x.getPrice();
-      }
-    }
-    return res;
+    return products.values().stream()
+        .flatMap(List::stream)
+        .mapToInt(Product::getPrice)
+        .sum();
   }
 
   public List<Product> remove(String name) {
@@ -40,23 +38,25 @@ public class ProductBasket {
   }
 
   public void print() {
-    int sum = 0;
-    int specialProductCount = 0;
-    for (String key : products.keySet()) {
-      for (Product x : products.get(key)) {
-        System.out.println(x);
-        sum += x.getPrice();
-        if (x.isSpecial()) {
-          specialProductCount++;
-        }
-      }
-    }
+    List<Product> allProducts = products.values().stream()
+        .flatMap(List::stream)
+        .toList();
+    allProducts.forEach(System.out::println);
+    int sum = allProducts.stream()
+        .mapToInt(Product::getPrice)
+        .sum();
     if (sum == 0) {
       System.out.println("в корзине пусто");
     } else {
       System.out.println("Итого: " + sum);
-      System.out.println("Специальных товаров: " + specialProductCount);
+      System.out.println("Специальных товаров: " + getSpecialCount(allProducts));
     }
+  }
+
+  private int getSpecialCount(List<Product> allProducts){
+    return (int) allProducts.stream()
+        .filter(Product::isSpecial)
+        .count();
   }
 
   public boolean checkProduct(String name) {

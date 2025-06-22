@@ -27,8 +27,6 @@ public class SearchEngine {
     if (substr == null || substr.isBlank()) {
       throw new IllegalArgumentException("substr is empty");
     }
-    int maxRepeatCount = 0;
-    int currentRepeatCount = 0;
     OptionalInt maxRepeatCountOptional = allSearchableObjects.stream()
         .mapToInt(x -> x.getSearchTerm(substr))
         .max();
@@ -36,7 +34,7 @@ public class SearchEngine {
       throw new BestResultNotFound(substr);
     }
     else {
-      maxRepeatCount = maxRepeatCountOptional.getAsInt();
+      final int maxRepeatCount = maxRepeatCountOptional.getAsInt();
       return allSearchableObjects.stream()
           .filter(x -> x.getSearchTerm(substr) == maxRepeatCount)
           .collect(Collectors.toCollection(() -> new TreeSet<>(new FindComporator())));
